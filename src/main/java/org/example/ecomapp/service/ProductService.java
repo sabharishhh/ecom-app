@@ -29,7 +29,11 @@ public class ProductService {
         return repo.save(prod);
     }
 
-    public Product delProduct(int id) {
-        return repo.deleteById(id);
+    public void delProduct(int id) {
+        repo.deleteById(id);
+    }
+
+    public List<Product> searchProduct(String keyword) {
+        return repo.searchProduct(keyword);
     }
 }

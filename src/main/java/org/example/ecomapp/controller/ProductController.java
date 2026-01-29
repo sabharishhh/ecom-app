@@ -56,11 +56,25 @@ public class ProductController {
     @DeleteMapping("/product/{id}")
     public ResponseEntity<?> delProduct(@PathVariable int id) {
         try {
-            Product product = service.delProduct(id);
-            return new ResponseEntity<>(product,HttpStatus.OK);
+            Product product = service.getProductById(id);
+
+            if (product != null) {
+                service.delProduct(id);
+                return new ResponseEntity<>("Deleted", HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Product not found", HttpStatus.OK);
+            }
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @GetMapping("/products/search")
+    public ResponseEntity<List<Product>> searchProduct(@RequestParam String keyword) {
+        System.out.println("Searching with " + keyword);
+        List<Product> searchProducts =  service.searchProduct(keyword);
+        return new ResponseEntity<List<Product>>(searchProducts, HttpStatus.OK);
+
     }
 
 }

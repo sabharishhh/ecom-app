@@ -5,9 +5,7 @@ import org.example.ecomapp.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -33,4 +31,36 @@ public class ProductController {
         System.out.println("prod: " + id + "data requested");
         return new ResponseEntity<>(service.getProductById(id), HttpStatus.OK);
     }
+
+    @PostMapping("/product")
+    public ResponseEntity<?> addProduct(@RequestBody Product prod) {
+
+        try {
+            Product product = service.addProduct(prod);
+            return new ResponseEntity<>(product, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping("/product/{id}")
+    public ResponseEntity<?> updateProduct(@PathVariable int id, @RequestBody Product prod) {
+        try {
+            Product product = service.updateProduct(id, prod);
+            return new ResponseEntity<>(product, HttpStatus.OK);
+        } catch (Exception e) {
+           return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping("/product/{id}")
+    public ResponseEntity<?> delProduct(@PathVariable int id) {
+        try {
+            Product product = service.delProduct(id);
+            return new ResponseEntity<>(product,HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }
